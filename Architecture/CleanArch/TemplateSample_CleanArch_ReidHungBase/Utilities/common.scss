@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+// 主題色
+/* 字型 */
+/* 字級 */
+
+/* 按鈕樣式? bs */
+
+:root{
+    --theme-color1:#03787c;
+    --theme-color2:#0f0;
+    --theme-color3:#000;
+
+    font-size: 15px;
+}
+
+a:hover , button:hover{
+    transform: scale(1.1); //應該要有個父層容器 子寬90% 高90%? 避免跑版
+}
+
+
+.bg-theme1{
+    background-color: var(--theme-color1);
+}
+
+// .btn-theme1{
+//     background-color: var(--theme-color1);
+//     border-color: var(--theme-color1);
+//     color: #fff;
+// }
+
+/* md */
+@media screen and (min-width:768px){
+    :root{    
+        font-size: 17px;
+    }
+} 
+/* lg */
+@media screen and (min-width:992px){}
+/* xl */
+@media screen and (min-width:1200px){
+    :root{    
+        font-size: 19px;
+    }
+
+}
+

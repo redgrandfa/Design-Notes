@@ -1,0 +1,77 @@
+資料夾
+    其他
+    方案 CleanArch + Git
+
+Core
+	extension => 擴充方法
+        TimeExtension (Andy BSLMS裡)
+        EnumExtention (LMS)
+
+		DateTimeOffset
+
+
+	helper => 靜態方法
+        JWT
+
+    
+
+	Service
+		輸入 若不複雜就 裸? 以方便辨識多載?
+		回傳型 
+			DTObase?	沒有封裝 base =>  直接拋例外 給API接
+
+
+Infra
+    Data
+    Migrations
+
+
+App
+    MiddleWare => MockTest
+    ConfigureServices
+
+
+    API 
+        Request 
+            若巢狀，swagger會壞掉
+        
+        回傳
+            不模型，直接匿名型別 => 前端接收
+
+        baseAPI
+            路由規則、繼承、
+                
+            (try catch... 統一回傳 )
+        try catch? 前端自己會 回應處理?
+
+
+
+====
+MVC教學：
+    各種MVC必備
+        網址 > Route > Controller/Action > View > 寫死資料/超連結  前端互動：JS 發請求 打API
+        無base v1 
+            sample 1個
+        有Service
+
+        有base v2 
+            base + 
+            sample 1~2個
+
+    topic 現場教，或使用模板? buildschool CLI => template 命令(專案/項目)
+        SQLServer   北風 Context、Repository?
+
+        驗證/授權
+
+    topic 非必要
+        排程
+        富文本
+        快取資料庫：
+            localStorage(在瀏覽器? chrome/edge測試 )、
+            Cookie(在瀏覽器，同源自動夾帶 去後端)、
+            redis、
+
+
+        Automapper
+
+

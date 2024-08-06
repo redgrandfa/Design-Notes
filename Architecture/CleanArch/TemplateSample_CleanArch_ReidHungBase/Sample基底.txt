@@ -1,0 +1,135 @@
+
+====
+fetch/fetchPost
+
+API分類
+    A.fetch任何資源 => 
+        afterFetch() 
+            resp.?? 、成功無訊息、錯誤alert
+        UserTriggered??
+
+    B.fetch_AppApi => 回應物件固定
+        B1-背景API
+            afterApiFetched() 
+                resp.json() 、 成功無訊息、錯誤alert
+
+        B2-UserTriggered => 
+            afterUserTriggeredApiFetch() 
+                resp.json() 、 成功toast 、錯誤alert
+
+
+
+//任一種形式的fetch (ex.去抓 json檔...)
+Promise.prototype.afterFetch =function(  OK_Do ){
+    this.then( resp => {
+        if(resp.ok){
+            OK_Do(resp)
+        }else{
+            回應不ok的處理 = API溝通失敗/API拋例外
+            (不需要顯示例外資訊吧? )
+            彈訊息告知異常
+        }
+    }.catch( err => 前端throw error的處理?? ){ 彈訊息告知異常 }
+}
+
+
+//敲API，後端有統一的封裝responseBody
+Promise.prototype.afterAPI = function(afterSuccess, afterFail) {
+    this.afterFetch(
+        (resp) => { 
+            resp.json()
+            .then( respBody => {
+                if (result.status > 0) { //API不一定要顯示訊息?
+                    //失敗必定有訊息提示? 
+                    alert(respBody.message)
+                    afterFail(respBody)
+                }
+                else {
+                    //成功 不一定 有訊息提示
+                    alert(respBody.message)
+                    afterSuccess(respBody)
+                }
+            })
+        }
+    )
+}
+
+API => 成功、
+    失敗(帳密打錯這種)、
+
+    不正當操作(打網址..等) => 
+        麻煩，須設定 = AppException + Filter抓起來 組成ApiResult...
+        沿用 Exception
+    系統錯 Exception
+
+    心得
+        字串輸入API 太有彈性 => 利用Enum限制輸入 (發現字典也可以)
+
+
+spinner處理 => visible = false? 避免體積變來變去
+
+
+====【有一個環節不成功，就提前return】
+基底layer
+    action > 多個service操作，哪一步出錯? 一個環節不成功 就提前return 帶訊息。
+    service > 多個repo操作，哪一步出錯?  一個環節不成功 就提前return 帶訊息。
+
+
+基底DTO
+    1. enum 是要讓上家可以進行 多分岔的流程控制
+    2. 訊息給使用者看(非工程師) 。 
+        如果只有 true/false 那可能 可依據訊息是否null 但似乎不該直接判斷... 會難擴充
+            我都走出錯提前return路線 => 屬性IsFail 比IsSuccess要少一次否定運算
+
+【訊息容易承繼】。 
+狀態碼則不容易...因為一對多...enum又不能聚合。
+    能順利跑完整個action => action狀態碼... 就是成功， 訊息就是當場設定成功訊息
+前端需要流程控制?? 失敗有訊息那還需要?
+
+
+====基底 通常應該要abstract / 通用物件 要可建構
+viewModel
+
+    request...
+AppApiControllerBase
+    統一回ok(responseBody) 
+        responseBody = 
+            statusCode => enum給上家做多分支用 0/1 / 更多失敗狀態
+            object payload
+            Message => 
+                失敗訊息：從service來，
+                成功訊息：則在action末端寫
+                成功但不寫出訊息的情境...
+
+    (action base 應該不需要)
+
+    inputDTO：從request製造
+service_Base => baseRepo欄位、httpcontextAccessor欄位
+    outputDTO Base ：錯誤訊息、(payload)
+
+    (aggregate...)
+repo_Base
+    (aggregate...)
+
+    db model
+dbContext
+    db model
+
+
+====
+Exception
+    ApplicationException
+    SystemException
+
+throw new ApplicationException("正常操作下 不會發生的事，若要防則主動拋例外ex.手動輸入網址列")
+
+
+1. 【例外有沒有要 抓起來處理? 沒有要捉，就不用寫】
+    API直接在前端處理
+    action...要有個error會自動呈現的頁
+
+2. 正常程式是成功的情境多 => 物件初始化預設成功?  IsFail?
+
+3. Exception的向外傳遞，會直接跳脫 原本訂好的DTO鏈
+    系統例外 => 不希望捕捉，直接拋出
+    filter 寫入DB，再拋出

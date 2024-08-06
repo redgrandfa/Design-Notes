@@ -1,0 +1,48 @@
+GitHub
+Azure
+
+
+====庫
+JS物件 
+JSON
+Redis 30MB
+
+
+Amazon DynamoDB 非關聯 雲端 永遠免費
+MySQL in App  本機?
+MySQL  開源
+MongoDB?
+
+AWS Lambda無伺服器運算 ALWAYS FREE
+
+
+====
+Coravel
+
+
+====
+    Vue.js
+    bootstrapVue 
+    fontawesome
+    bootstrap 4
+
+    toast
+    sweet alert
+
+
+Azure部署 MVC...
+    html =>
+    css 
+        元件化
+
+    js
+        JS物件假資料
+
+API 
+
+
+
+
+
+
+

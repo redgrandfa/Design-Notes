@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- <script src="sweetalert2.min.js"></script>
+        <link rel="stylesheet" href="sweetalert2.min.css" /> -->
+        <script>
+            Swal.fire({
+                //標題
+                title: 'Error!', //as HTML
+                titleText: '', //as text
+
+                //desc
+                html:'', //優先於text
+                text: 'Do you want to continue',
+
+                icon: 'error', //warning, error, success, info, and question.
+                iconColor:undefined,
+                iconHtml:undefined,
+
+                 //fade in
+                showClass:{
+                    popup: 'swal2-show',
+                    backdrop: 'swal2-backdrop-show',
+                    icon: 'swal2-icon-show'
+                },
+
+                 //fade out
+                hideClass:{
+                    popup: 'swal2-hide',
+                    backdrop: 'swal2-backdrop-hide',
+                    icon: 'swal2-icon-hide'
+                },
+
+                footer: '', //as html or text
+
+                //蓋板背景?
+                backdrop: true , //boolean or a string which will be assigned to the CSS background property.
+
+                //當作toast，常搭配 position、timer
+                toast:false,  // NEVER autofocused.
+
+                //??  The container element for adding popup into.
+                target:'body',
+
+                input: '' ,//text, email, password, number, tel, range, textarea, select, radio, checkbox, file , url.
+
+                //Popup window width (border-box) in any CSS unit (px, em/rem, %).
+                width:'32em',
+                padding:'0 0 1.25em',
+
+                //title, content and footer default '#545454'.
+                color:undefined,
+                //Popup window background (CSS background property). default  '#fff'.
+                background:undefined,
+
+                //Popup window position
+                position:'center', //'top', 'top-start', 'top-end', 'center', 'center-start', 'center-end', 'bottom', 'bottom-start', or 'bottom-end'.
+
+                // sets the direction the popup should [grow in] , Paired with window position
+                grow:false, //'row', 'column', 'fullscreen', or false
+
+                //CSS class for the popup
+                customClass:undefined,
+
+
+                //Auto close popup milliseconds
+                timer:undefined, //See also Swal.getTimerLeft(), Swal.stopTimer(), Swal.resumeTimer(), Swal.toggleTimer(), Swal.isTimerRunning() and Swal.increaseTimer().
+
+                //sets html's and body's CSS height to auto !important.
+                timerProgressBar:false,
+
+                heightAuto:true,
+
+                //dismiss the popup by clicking outside
+                allowOutsideClick:true,
+
+                //dismiss the popup by pressing the Esc key.
+                // You can also pass a custom function returning a boolean value,    e.g. if you want to 【disable the Esc key for the loading state】 of a popup.
+                allowEscapeKey:true,
+
+                //confirm the popup by pressing Enter or Space key
+                allowEnterKey:true, //can also pass a custom function returning a boolean value.
+
+                //鍵盤事件傳遞
+                stopKeydownPropagation:true,
+
+                //ex. true 避免 影響到bootstrap modal
+                keydownListenerCapture:false,
+
+                showConfirmButton:true,
+                showDenyButton:false,
+                showCancelButton:false,
+                confirmButtonText:'OK',
+                denyButtonText:'No',
+                cancelButtonText:'Cancel',
+
+                confirmButtonColor:undefined,
+                denyButtonColor:undefined,
+                cancelButtonColor:undefined,
+
+                confirmButtonAriaLabel:'',
+                denyButtonAriaLabel:'',
+                cancelButtonAriaLabel:'',
+
+                //If you want to use your own classes (e.g. Bootstrap classes) set this parameter to false.
+                buttonsStyling:true,
+
+
+                reverseButtons:false, //Set to true if you want to invert default buttons positions ("Confirm"-button on the right side).
+
+                focusConfirm:true, //Set to false if you want to focus the first element in tab order instead of "Confirm"-button by default.
+
+                returnFocus:true, //Set to false if you don't want to return the focus to the element that invoked the modal after the modal is closed.
+
+                focusDeny:false,
+                focusCancel:false,
+
+
+                showCloseButton:false,
+                closeButtonHtml:'&times;', //content of the close button.
+                closeButtonAriaLabel:'Close this dialog',
+                loaderHtml:'', //HTML content of the loader.
+
+                showLoaderOnConfirm:false,
+
+                //....
+            })
+
+
+
+            //reuse configuration  Swal.mixin({ ...options }):
+
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+
+            Toast.fire({
+              icon: 'success',
+              title: 'Signed in successfully'
+            })
+
+            //Declarative templateSupported、 template elements:  搭配template
+                Swal.fire({
+              template: '#my-template'
+            })
+
+            //!! 綁按鈕點擊事件    這只是少一點語法?  原生點擊也可以吧
+            Swal.bindClickHandler()
+            Swal.mixin({
+              toast: true,
+            }).bindClickHandler('data-swal-toast-template')
+
+            //!! 處理clicks a button,
+            // the Promise returned by Swal.fire() will be
+            // resolved with the 【SweetAlertResult】 object:
+
+            //一堆屬性
+
+            //!! 處理 DISMISSALS
+
+
+            //!! INPUT TYPES介紹
+
+            //!! METHODS
+
+
+            //THEMES
+        </script>
+    </body>
+</html>

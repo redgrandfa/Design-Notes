@@ -1,0 +1,69 @@
+
+.toggleInput+label {
+	cursor: pointer;
+	width: 40*$base;
+	height: 20*$base;
+	background: grey;
+	display: block;
+	border-radius: 10*$base;
+	position: relative;
+    
+    &::after {
+        content: '';
+        position: absolute;
+        top: $base;
+        left: $base;
+        width: 18*$base;
+        height: 18*$base;
+        background: #fff;
+        border-radius: 9*$base;
+        transition: 0.3s;
+    }
+}
+
+
+.toggleInput{
+    display: none;
+
+    &:checked + label {
+        background: var(--theme-color1);
+
+        &:after {
+            left: calc(100% - $base);
+            transform: translateX(-100%);
+        }
+    }
+}
+
+.switch-txt{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    height: 100% ;
+    font-size: 6*$base;
+
+    // position: relative;
+}
+
+.switch-txt::before,
+.switch-txt::after {
+    display: block;
+    font-weight: bold;
+    box-sizing: border-box;
+
+    // display: inline-block;
+    // vertical-align: middle;
+
+    // position: absolute;
+    // top: 50%;
+    // transform: translateY(-50%);
+}
+.switch-txt::before {
+    content: attr(turnOn);
+    color: #fff;
+}
+.switch-txt::after {
+    content: attr(turnOff);
+    color: #ccc;
+}

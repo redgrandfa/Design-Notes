@@ -1,0 +1,223 @@
+The architecture of a software 
+    is the 【shape】 given to that system by those who build it.
+
+The form of that shape is in 
+    the 【division】 of the system into components, 
+    the 【arrangement】 of those components, 
+    and the ways in which those components 【communicate】 with each other.
+
+
+架構基本上與功能無關
+形狀的目的是為了幫助：
+    開發（development）
+    佈署（deployment）
+    維運（operation）
+    維護（maintenance ）
+
+
+終極目標可以簡化成以下兩點：
+    最小化軟體生命周期的總成本
+    最大化程式設計師的生產力
+
+
+=======================
+====Clean Architecture
+    【
+        獨立於框架
+        可測試
+        獨立於UI
+        獨立於資料庫
+        獨立於任何外部代理
+    】
+
+    known as
+        Onion Architecture
+        Port and Adapter Architecture
+            (    一個適配器 身上有很多port，輸入輸出)
+            軟體架構可以透過好多組Port and Adapter 一直不斷地串接下去
+        Hexagonal Architecture（六角形)
+
+    => 開發方向可以由內而外，相依方向則應該是由外而內(domain centric approach 去組織相依性)，
+            也就是系統核心不需要知道在外圈的資料庫、框架與UI，
+
+    Clean Architecture 建議系統有四層，
+        內圈為策略，外圈為機制；
+        內圈為核心，外圈為細節；
+        內圈為高層，外圈為低層。
+
+    「離I/O（輸入、輸出）越遠的元件層級越高，離I/O越近的層級越低」
+
+
+
+書中有四個預設的階層，分別是：
+    Enterprise Bussiness Rules
+        Entities：
+        也就是傳統物件導向分析與設計所說的domain model object。
+    App Bussiness Rules
+        Use Cases：
+            Entities這一層存放著【核心商業邏輯，也就是在這個領域中，不同應用程式都用得到的物件】。
+            而Use Cases則代表【應用程式邏輯】，也就是應用程式的功能。
+            Use Cases扮演著controller的角色，呼叫Entities或是Repository物件提供應用程式對外的服務。
+    Interface Adapters：
+        將外部資料與呼叫介面透過此層轉呼叫Use Cases，如此一來Use Cases就可以與I/O或是應用程式框架無關。
+        
+    Frameworks and Drivers：
+        此層包含了應用程式框架，例如如果Java程式使用了Spring Framework，
+        則Spring Framework就位於這一層。
+        資料庫，或常見的MVC Framework也都位於這一層。
+        通常大家在這一層所寫的程式都只是為了把應用程式框架與內部的Interface Adapters或Use Cases串起來的膠水程式，鮮少有複雜的商業邏輯會位於這一層。
+
+
+
+
+
+====實務
+    https://youtu.be/lkmvnjypENw
+    專案們：
+    Core Proj = Domain Model & 抽象
+        web proj 和 User、device互動
+        Infra Proj = DB、testDB
+        Test Proj 
+
+    全部相依於 Core，Core則不相依於任何 
+    希望 商務邏輯 在 Core中
+        ex. 模型驗證 在 Core 和 UI都有
+    希望抽象層 在Core中，以免 其他專案之間得相依
+
+    Core中該有的東西
+        entities
+        Aggregate => 將entity群組 以便於 持久化資料
+        Value Object 
+            需要驗證的話可以放在 建構式中，ex.起始日期不得小於終止日期 以DRY
+        Domain services
+        Domain Exception
+        Domain Event
+            Event Handlers
+        specification
+            query logic 離開 repositories? linq
+            可以創一個List，套用此specification後，檢查結果
+
+        validators
+            ex. 圖片max bytes < 512000
+
+        Enums
+        Custom Guards  簡單的validators確保系統一致
+
+    Infra中
+        DbContext
+        Repo、CachedRepo
+        API client
+        File system accessor
+        Azure Storage Accessor
+        實作
+        不使用 domain model 的 介面們
+
+    Web
+        controllers
+        View 、 API endpoint
+        配合以上的DTO
+        Filter
+        MiddleWare
+        Model Binder  Tag Helper
+
+        【Composition Root】
+        使用這裡的模型的service、interface
+
+        檢視
+
+        ViewModels
+        啟動
+
+        微軟：在 UI 層不應該允許基礎結構層類型的任何直接具現化或靜態呼叫。
+            為了在應用程式啟動期間連接相依性插入，UI 層專案可能需要參考基礎結構專案。 
+            您可以使用內建支援從元件載入類型的自訂 DI 容器，藉此消除此相依性。 
+            基於此範例的目的，最簡單的方法是讓 UI 專案參考基礎結構專案 
+            (，但開發人員應該將基礎結構專案中類型的實際參考限制為應用程式的組合根目錄) 。
+
+    shared kernel核心..
+        DDD 
+
+====template
+        dotnet new --install Ardalis.CleanArchitecture.Template::6.2.8
+        dotnet new clean-arch -o 路徑
+
+        Core
+            Project: BaseEntity、IAggregateRoot
+            ToDoItem: BaseEntity
+
+        Infra 
+
+
+
+========================
+
+====1 分層原則
+    常見的 階層式架構 
+        展示/互動(IO)  UI  presentation Layer 
+        商務邏輯        Bussiness Logic Layer
+        資料固化/持久    DAL 、Data Persistence Layer
+                    DB Layer
+
+====2 相依性原則
+    書中所定義的相依性原則
+        （程式碼相依性必須只能往內，指向更高層級的策略。）
+        Source code dependencies must point only inward, toward higher-level policies. 
+
+
+====3 跨層原則
+    可否「跨層相依」
+
+
+
+====
+
+文件導讀
+
+UseDefaultExceptionPage? => 才會有那個例外頁
+    架構導讀 => 建構式注入
+    lv1 沒有屬性，注入的參數 預設做些事
+    lv2 傳給屬性
+
+
+注入一堆 => 只有最後一個生效  因為覆蓋
+    => 建構式參數型別 IEnumerable<介面>
+    switch 
+        case Class1 ...
+
+
+    Trace.Assert( xx is 型別)
+
+    文件：相依性插入 >　服務存留期
+        為何context是 scoped?
+        transient 文件說明 適合無狀態
+
+    大的不能存取小的 => singleton 拿步道 scope?
+        scope拿不到 
+        => 驗查： service設定 singleton 取用 DBcontext
+            
+    transient 
+
+    Clean Architecture 
+
+    架構 => 大師那句話 勸用
+
+        andyHuang1223 BS
+            Core
+                Entities
+                Extensions
+                Interfaces 所有
+            Infrastructure
+                Data
+                    migrations
+                    【context】
+                    repo
+
+            user secret
+
+        資料夾檢視 > readme有指令
+        sln點兩下 會變回方案檢視
+
+        taghelper 不需要 引入 validation??
+
+        POCO => 平
+
