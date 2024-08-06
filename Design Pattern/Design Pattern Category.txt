@@ -1,0 +1,116 @@
+Usually the need for patterns arises when people choose a programming language or a technology that lacks the necessary level of abstraction. 
+
+For example, the Strategy pattern can be implemented with anonymous (lambda) function
+
+
+
+
+Creational patterns 
+    provide object creation mechanisms
+        (flexibility and reuse)
+
+    Factory Method  : 
+        client 和 product之間卡一層 Creator介面，polymorphism解耦
+    Abstract Factory: 
+        Creator創建一套product family = 多dimension版本，
+    Builder: 
+        拆分建立複雜物件的步驟，可抽換，以造出不同產物。 
+        常用的幾套步驟可以設計在class Director之下
+    Prototype:  
+        IPrototye::clone()，利用polymorphism解耦，複製現有的object，(注意深淺拷貝)
+    Singleton: 
+        首次建構object後就cache
+
+Structural patterns 
+    how to  (flexible and efficient) assemble objects and classes into larger structures
+
+    Adapter: 
+        疏通不相容的介面， Service -> Covert by Adapter -> ClientInterface
+    Bridge: 
+        大Class拆成兩子系(1高階 + 1低階)，client操控高階，高階委派給低階
+    Composite: 
+        樹狀結構，複雜物件包 複雜or簡單物件
+    Decorator: 
+        鏈狀結構，一級一級delagate，每一級Decorator安插步驟，Decorator可抽換
+    Facade: 
+        多個子系統的前台小姐，簡化介面，通常會限縮功能
+    Flyweight: 
+        抽出共同資訊，不重複儲存，節省記憶體
+    Proxy: 
+        設計共同Interface，偽裝成真實物件的中間人作控管
+    
+
+Behavioral patterns 
+    communication and the assignment of responsibilities between objects.
+
+    Chain of Responsibility: 
+        逐一處理傳遞request
+    Command:
+        Invoker 與 Receiver之間多一層 Command，解耦、減少重複、利於擴充
+    Iterator:
+        Iterable: 
+            要traverse時，createIterator() 
+        Iterator: 
+            Iterable物件、狀態(位置)    getNext()、hasMore()
+
+    Mediator:
+        component觸發 -> Mediator.notify(sender, event)
+        Mediator再根據收到的通知決定是否操控其他component
+    Mememto:
+        Caretaker
+            打包: originator、memento堆疊
+            pusj|pop memento物件<->傳接給originator以存取memento物件內私有state
+
+        Originator 
+            與Caretaker傳接memento物件<->取內部存的狀態<->執行存|退狀態
+            Memento := Originator的快照
+
+    Observer:
+        publisher trigger-> notify subscribed observer
+
+    State:
+        state-related logic , extracted to isolated State classes   
+
+        context.doSth(){
+            #delegate to state object
+            state.doSth(){
+                ...logic...
+                # a state may change the context's state to another
+            }
+        }
+
+    Strategy:
+        client : 挑選concrete strategy傳給context
+
+        context := 想要做的邏輯，委派局部算法給一個IStrategy，
+                可動態抽換strategy object
+
+        strategy := 紀錄演算法的一個變體，開放擴充新strategy class
+
+    Template Method:
+        BaseClass  
+            templateMethod(){  不被覆寫
+                step1()  # 可被子類覆寫
+                step2()  # 可被子類覆寫
+            }
+
+    Visitor:
+        將元件要執行的演算法(behavior)分離到Visitor class中
+        先建立接待<->拜訪關聯
+        IComponent.accept(IVisitor){
+            IVisitor.visit( Component1 ) {
+                #參數型別多載，已確知Component的concreteType
+                Component1.do_1_to_do()
+            }
+        }
+
+
+
+
+    INTERPRETER??
+        轉換成抽象語法樹（Abstract Syntax Tree）
+
+
+
+
+
