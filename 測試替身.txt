@@ -1,0 +1,60 @@
+====閱讀材料
+https://medium.com/starbugs/unit-test-%E4%B8%AD%E7%9A%84%E6%9B%BF%E8%BA%AB-%E6%90%9E%E4%B8%8D%E6%B8%85%E6%A5%9A%E7%9A%84dummy-stub-spy-mock-fake-94be192d5c46
+
+====名詞
+SUT(System Under Test)  = 測試目標
+DOC(Depended-on Component)= SUT所依賴的程式或物件。 
+
+----Double替身
+    Dummy Object、
+    Test Stub、
+    Test Spy、
+    Mock Object、
+    Fake Object
+
+
+==== Dummy Object、
+英文直譯冒牌貨
+
+用途是用來填充 SUT 中需要的物件。
+Dummy 不會對 SUT 造成任何的影響。純粹讓測試程式能夠運行。
+
+
+====Test Stub(墩 樁)
+想要驗證的 SUT 回傳值，這時候 Stub可以派上用場
+
+Ex.手電筒
+不想讓'電池'沒電這個因素影響我的測試。
+所以做一組替身電池 【Stub Object】 塞進這個手電筒裡面。  (建構式傳進去??)
+讓我可以輕鬆驗證 SUT 的回傳值。
+
+
+====Test Spy
+Spy 用來驗證 【SUT 與對其他 DOC 物件造成的效果】，
+
+
+例如：
+阿牛 => 朋友 聊天
+朋友.聊天次數++
+
+想測試
+朋友.聊天次數 是某真如預期加一++
+
+製作spy朋友物件
+
+
+====Mock Object
+Mock 是一個能夠判斷 SUT 是不是有正確使用 DOC 的替身
+Mock 跟 Spy 的最大差別是，
+Mock 用來驗證 SUT 的行為，
+而 Spy 用來驗證 SUT 對 DOC 狀態的改變。
+
+
+====Fake Object
+是一個【簡化的 DOC】，
+例如：一台真實的飛機有很多零件，但是我們其實只需要他有外殼
+    ，並且可以飛，可以降落 … 等等的行為。
+
+所以做一個【簡單版的假物件】。
+【假物件不需要考慮跟 SUT 目標對象的間接互動(Indirect input , indirect output)。
+
